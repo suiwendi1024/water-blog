@@ -21,5 +21,6 @@ export default {
     plugins: [
         forms,
         require('@tailwindcss/typography'),
+        require("daisyui"),
     ],
 };
