@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Category;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -13,10 +14,17 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest('id')->paginate()->through(fn (Post $post) => $post->append('beginning'));
+        $query = Post::latest('id');
+
+        if (request('category') > 1) {
+            $query->whereCategoryId(request('category'));
+        }
+
+        $posts = $query->paginate()->through(fn (Post $post) => $post->append('beginning'));
 
         return inertia('Posts/Index', [
-            'posts' => $posts,
+            'posts' => fn () => $posts,
+            'categories' => fn () => Category::all(),
         ]);
     }
 

@@ -18,6 +18,7 @@ class Post extends Model
      */
     protected $fillable = [
         'user_id',
+        'category_id',
         'title',
         'body',
     ];
@@ -29,6 +30,7 @@ class Post extends Model
      */
     protected $with = [
         'author',
+        'category',
     ];
 
     /**
@@ -39,6 +41,16 @@ class Post extends Model
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * 帖子的分类。
+     *
+     * @return BelongsTo
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**
