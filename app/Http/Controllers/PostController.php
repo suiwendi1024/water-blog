@@ -20,7 +20,7 @@ class PostController extends Controller
             $query->whereCategoryId(request('category'));
         }
 
-        $posts = $query->paginate()->through(fn (Post $post) => $post->append('beginning'));
+        $posts = $query->paginate()->through(fn (Post $post) => $post->append(['beginning', 'href']));
 
         return inertia('Posts/Index', [
             'posts' => fn () => $posts,
@@ -49,7 +49,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return inertia('Posts/Show', [
+            'post' => fn () => $post,
+        ]);
     }
 
     /**

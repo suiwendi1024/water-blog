@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Post extends Model
 {
@@ -54,6 +55,16 @@ class Post extends Model
     }
 
     /**
+     * 帖子的评论。
+     *
+     * @return MorphMany
+     */
+    public function comments(): MorphMany
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /**
      * 从帖子的正文提取帖子的开头。
      *
      * @return Attribute
@@ -62,6 +73,18 @@ class Post extends Model
     {
         return Attribute::make(
             get: fn (mixed $value, array $attributes) => substr(strip_tags($attributes['body']), 0, 200),
+        );
+    }
+
+    /**
+     * 帖子的链接。
+     *
+     * @return Attribute
+     */
+    protected function href(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => route('posts.show', ['post' => $this->id]),
         );
     }
 }

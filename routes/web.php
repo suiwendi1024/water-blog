@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -40,3 +41,6 @@ require __DIR__.'/auth.php';
 
 // 帖子
 Route::resource('posts', PostController::class);
+
+// 评论
+Route::apiResource('posts.comments', CommentController::class)->shallow();

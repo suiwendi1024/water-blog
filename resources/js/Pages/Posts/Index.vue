@@ -1,9 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
-import { router } from '@inertiajs/vue3'
 
 const props = defineProps({
     posts: {
@@ -49,7 +48,9 @@ const currentCategory = ref(new URLSearchParams(location.search).get('category')
                             class="bg-white overflow-hidden shadow-sm sm:rounded-lg"
                         >
                             <article class="card-body">
-                                <h2 class="card-title">{{ post.title }}</h2>
+                                <h2 class="card-title">
+                                    <a :href="post.href" target="_blank">{{ post.title }}</a>
+                                </h2>
                                 <div
                                     v-html="post.beginning"
                                     class="line-clamp-2"
