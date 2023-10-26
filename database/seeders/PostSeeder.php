@@ -16,13 +16,12 @@ class PostSeeder extends Seeder
     public function run(): void
     {
         $users = User::limit(10)->get();
-        $categories = Category::all();
+        $categories = Category::where('id', '>', 1)->get();
 
-        foreach ($users as $i => $user) {
+        for ($i = 0; $i < 100; $i++) {
             Post::factory()
-                ->count(3)
-                ->for($user, 'author')
-                ->for($categories->get($i % $categories->count()))
+                ->for($users->random(), 'author')
+                ->for($categories->random())
                 ->create();
         }
     }

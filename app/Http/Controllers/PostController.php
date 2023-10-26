@@ -9,6 +9,10 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth')->except('index', 'create');
+    }
+
     /**
      * Display a listing of the resource.
      */

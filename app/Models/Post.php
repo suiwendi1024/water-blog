@@ -25,13 +25,42 @@ class Post extends Model
     ];
 
     /**
-     * 要在每个查询上加载的关系。
+     * 应该为序列化隐藏的属性。
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'user_id',
+        'category_id',
+    ];
+
+    /**
+     * 应该强制转换的属性。
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
+    /**
+     * 应该在每个查询上急切加载的关系。
      *
      * @var array<int, string>
      */
     protected $with = [
         'author',
         'category',
+    ];
+
+    /**
+     * 应该在每个查询上急切加载的关系计数。
+     *
+     * @var array<int, string>
+     */
+    protected $withCount = [
+        'comments',
     ];
 
     /**

@@ -8,6 +8,10 @@ use App\Http\Requests\UpdateCommentRequest;
 
 class CommentController extends Controller
 {
+    public function __construct() {
+        $this->middleware('auth')->except('index');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,9 +33,11 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, $commentable)
     {
-        //
+        $comment = $commentable->comments()->create($request->validationData());
+
+        return response()->json($comment->load('owner'));
     }
 
     /**

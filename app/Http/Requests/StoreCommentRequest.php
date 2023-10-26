@@ -11,7 +11,7 @@ class StoreCommentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'body' => ['required', 'max:20000'],
         ];
+    }
+
+    /**
+     * 为验证准备数据。
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'user_id' => auth()->id(),
+        ]);
     }
 }

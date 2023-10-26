@@ -43,4 +43,4 @@ require __DIR__.'/auth.php';
 Route::resource('posts', PostController::class);
 
 // 评论
-Route::apiResource('posts.comments', CommentController::class)->shallow();
+Route::resource('posts.comments', CommentController::class)->shallow();

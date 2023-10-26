@@ -21,6 +21,16 @@ class Category extends Model
     ];
 
     /**
+     * 应该为序列化隐藏的属性。
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
      * 分类包含的帖子。
      *
      * @return HasMany
