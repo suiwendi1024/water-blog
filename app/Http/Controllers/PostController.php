@@ -28,7 +28,7 @@ class PostController extends Controller
         $list = Post::withCount('comments')->latest('comments_count')->limit(10)->get()->append('href');
 
         $posts = $query->paginate()
-            ->through(fn (Post $post) => $post->append(['beginning', 'href']));
+            ->through(fn (Post $post) => $post->append(['beginning', 'href', 'is_liked']));
 
         return inertia('Posts/Index', [
             'list' => fn () => $list,

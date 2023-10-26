@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CommentsSection from '@/Components/CommentsSection.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import CommentIcon from '@/Components/CommentIcon.vue';
-import HeartIcon from '@/Components/HeartIcon.vue';
+import LikeIcon from '@/Components/LikeIcon.vue';
 
 const props = defineProps({
     post: {
@@ -73,7 +73,7 @@ const toggleLike = () => {
                             <ul class="menu menu-md bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <li>
                                     <a @click="toggleLike">
-                                        <HeartIcon :class="{ 'fill-pink-600 stroke-pink-600': post.is_liked }"></HeartIcon>
+                                        <LikeIcon :is-liked="post.is_liked"></LikeIcon>
                                     </a>
                                 </li>
                                 <li>

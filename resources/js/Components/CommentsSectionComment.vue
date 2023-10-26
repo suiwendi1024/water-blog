@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 import CommentsSectionDropdown from '@/Components/CommentsSectionDropdown.vue';
-import HeartIcon from '@/Components/HeartIcon.vue';
+import LikeIcon from '@/Components/LikeIcon.vue';
 
 const props = defineProps({
     comment: {
@@ -39,7 +39,7 @@ const toggleLike = () => {
                     href=""
                     @click.prevent="toggleLike"
                 >
-                    <HeartIcon :class="{ 'fill-pink-600 stroke-pink-600': comment.is_liked }"></HeartIcon>
+                    <LikeIcon :is-liked="comment.is_liked"></LikeIcon>
                 </a>
                 {{ comment.likes_count }}
             </div>

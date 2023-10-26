@@ -1,7 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import CommentIcon from '@/Components/CommentIcon.vue';
-import HeartIcon from '@/Components/HeartIcon.vue';
+import BlogEntry from '@/Pages/Posts/Partials/BlogEntry.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
@@ -69,31 +68,11 @@ const currentCategory = ref(new URLSearchParams(location.search).get('category')
 
                     <div class="basis-7/12 space-y-4">
                         <!-- 帖子列表 -->
-                        <div
+                        <BlogEntry
                             v-for="post in laravelData.data"
                             :key="post.id"
-                            class="card bg-white overflow-hidden shadow-sm sm:rounded-lg"
-                        >
-                            <article class="card-body">
-                                <h2 class="card-title">
-                                    <a
-                                        :href="post.href"
-                                        target="_blank"
-                                        class="link link-primary link-hover"
-                                    >{{ post.title }}</a>
-                                </h2>
-                                <div
-                                    v-html="post.beginning"
-                                    class="line-clamp-2 text-gray-600"
-                                ></div>
-                                <div class="card-actions items-center text-gray-600">
-                                    <h4 class="font-bold">{{ post.author.name }}</h4>
-                                    <div class="badge badge-outline">{{ post.category.title }}</div>
-                                    <CommentIcon></CommentIcon> {{ post.comments_count }}
-                                    <HeartIcon></HeartIcon> {{ post.likes_count }}
-                                </div>
-                            </article>
-                        </div>
+                            :post="post"
+                        ></BlogEntry>
 
                         <TailwindPagination
                             :data="laravelData"
