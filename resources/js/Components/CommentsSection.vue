@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
 import axios from 'axios';
 import CommentsSectionForm from '@/Components/CommentsSectionForm.vue';
-import CommentsSectionDropdown from '@/Components/CommentsSectionDropdown.vue';
+import CommentsSectionComment from '@/Components/CommentsSectionComment.vue';
 
 const props = defineProps({
     url: {
@@ -44,29 +44,13 @@ const removeComment = index => {
             ></CommentsSectionForm>
         </div>
         <!-- 评论列表 -->
-        <article
+        <CommentsSectionComment
             v-for="(comment, index) in laravelData.data"
             :key="comment.id"
+            :comment="comment"
             class="card-body"
-        >
-            <h4 class="font-bold">
-                <a
-                    href="#"
-                    target="_blank"
-                >{{ comment.owner.name }}</a>
-            </h4>
-            <div v-html="comment.body"></div>
-            <div class="flex justify-between -mb-2">
-                <div class="card-actions items-center text-gray-600 text-sm">
-                    <div>{{ comment.created_at }}</div>
-                </div>
-                <CommentsSectionDropdown
-                    :id="comment.id"
-                    :can-delete="comment.owner.id == $page.props.auth.user.id"
-                    @deleted="removeComment(index)"
-                ></CommentsSectionDropdown>
-            </div>
-        </article>
+            @deleted="removeComment(index)"
+        ></CommentsSectionComment>
     </div>
 
     <TailwindPagination

@@ -3,6 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CommentsSection from '@/Components/CommentsSection.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import CommentIcon from '@/Components/CommentIcon.vue';
+import HeartIcon from '@/Components/HeartIcon.vue';
 
 const props = defineProps({
     post: {
@@ -10,6 +11,16 @@ const props = defineProps({
         required: true,
     },
 })
+
+const toggleLike = () => {
+    let method = props.post.is_liked ? 'delete' : 'post'
+    let url = route('posts.likes.store', { post: props.post.id })
+
+    axios[method](url).then(() => {
+        props.post.likes_count += props.post.is_liked ? -1 : 1
+        props.post.is_liked = !props.post.is_liked
+    })
+}
 </script>
 
 <template>
@@ -35,6 +46,7 @@ const props = defineProps({
                                     <div class="space-x-8 text-sm">
                                         <span>发表 / {{ post.updated_at }}</span>
                                         <span>评论 / {{ post.comments_count }}</span>
+                                        <span>点赞 / {{ post.likes_count }}</span>
                                     </div>
                                     <div class="font-bold mt-8">{{ post.author.name }}</div>
                                     <div class="space-x-8 text-sm">
@@ -60,32 +72,34 @@ const props = defineProps({
                         <div class="fixed bottom-0 mb-8 space-y-4">
                             <ul class="menu menu-md bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <li>
-                                    <Link href="#comments-section">
-                                    <CommentIcon
-                                        class="w-6"
-                                        stroke-width="1.5"
-                                    ></CommentIcon>
-                                    </Link>
+                                    <a @click="toggleLike">
+                                        <HeartIcon :class="{ 'fill-pink-600 stroke-pink-600': post.is_liked }"></HeartIcon>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#comments-section">
+                                        <CommentIcon></CommentIcon>
+                                    </a>
                                 </li>
                             </ul>
                             <ul class="menu menu-md bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <li>
-                                    <Link href="#">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        class="w-6 h-6"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"
-                                        />
-                                    </svg>
-                                    </Link>
+                                    <a href="#">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="w-6 h-6"
+                                        >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"
+                                            />
+                                        </svg>
+                                    </a>
                                 </li>
                             </ul>
                         </div>

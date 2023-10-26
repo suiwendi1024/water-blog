@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -44,3 +45,9 @@ Route::resource('posts', PostController::class);
 
 // 评论
 Route::resource('posts.comments', CommentController::class)->shallow();
+
+// 点赞
+Route::post('posts/{post}/likes', [LikeController::class, 'store'])->name('posts.likes.store');
+Route::delete('posts/{post}/likes', [LikeController::class, 'destroy'])->name('posts.likes.destroy');
+Route::post('comments/{comment}/likes', [LikeController::class, 'store'])->name('comments.likes.store');
+Route::delete('comments/{comment}/likes', [LikeController::class, 'destroy'])->name('comments.likes.destroy');

@@ -17,7 +17,11 @@ class CommentController extends Controller
      */
     public function index($commentable)
     {
-        $comments = $commentable->comments()->latest('id')->paginate();
+        $comments = $commentable->comments()
+        ->latest('id')
+        ->withCount('likes')
+        ->paginate()
+        ->through(fn (Comment $comment) => $comment->append('is_liked'));
 
         return response()->json($comments);
     }
@@ -35,9 +39,9 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request, $commentable)
     {
-        $comment = $commentable->comments()->create($request->validationData());
+        $comment = $commentable->comment($request->body);
 
-        return response()->json($comment->load('owner'));
+        return response()->json($comment);
     }
 
     /**

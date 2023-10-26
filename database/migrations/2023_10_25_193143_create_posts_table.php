@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title')->comment('标题');
             $table->text('body')->comment('正文');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

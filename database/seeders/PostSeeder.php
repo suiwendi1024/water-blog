@@ -15,7 +15,7 @@ class PostSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::limit(10)->get();
+        $users = User::where('id', '>', 1)->get();
         $categories = Category::where('id', '>', 1)->get();
 
         for ($i = 0; $i < 100; $i++) {

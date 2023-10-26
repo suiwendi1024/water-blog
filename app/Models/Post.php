@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory,
+        HasComments,
+        HasLikes,
+        SoftDeletes;
 
     /**
      * 可批量指定的属性。
@@ -55,15 +58,6 @@ class Post extends Model
     ];
 
     /**
-     * 应该在每个查询上急切加载的关系计数。
-     *
-     * @var array<int, string>
-     */
-    protected $withCount = [
-        'comments',
-    ];
-
-    /**
      * 帖子的作者。
      *
      * @return BelongsTo
@@ -81,16 +75,6 @@ class Post extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    /**
-     * 帖子的评论。
-     *
-     * @return MorphMany
-     */
-    public function comments(): MorphMany
-    {
-        return $this->morphMany(Comment::class, 'commentable');
     }
 
     /**

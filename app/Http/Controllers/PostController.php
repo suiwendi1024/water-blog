@@ -9,7 +9,8 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth')->except('index', 'create');
     }
 
@@ -18,16 +19,19 @@ class PostController extends Controller
      */
     public function index()
     {
-        $query = Post::latest('id');
+        $query = Post::latest('id')->withCount('comments', 'likes');
 
         if (request('category') > 1) {
             $query->whereCategoryId(request('category'));
         }
 
-        $posts = $query->paginate()->through(fn (Post $post) => $post->append(['beginning', 'href']));
+        $list = Post::withCount('comments')->latest('comments_count')->limit(10)->get()->append('href');
+
+        $posts = $query->paginate()
+            ->through(fn (Post $post) => $post->append(['beginning', 'href']));
 
         return inertia('Posts/Index', [
-            'list' => fn () => Post::latest('comments_count')->limit(10)->get()->append('href'),
+            'list' => fn () => $list,
             'posts' => fn () => $posts,
             'categories' => fn () => Category::all(),
         ]);
@@ -54,6 +58,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post->loadCount('comments', 'likes')->append('is_liked');
         $post->author->loadCount('posts');
 
         return inertia('Posts/Show', [

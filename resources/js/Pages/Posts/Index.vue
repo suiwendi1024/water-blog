@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CommentIcon from '@/Components/CommentIcon.vue';
+import HeartIcon from '@/Components/HeartIcon.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
@@ -88,9 +89,8 @@ const currentCategory = ref(new URLSearchParams(location.search).get('category')
                                 <div class="card-actions items-center text-gray-600">
                                     <h4 class="font-bold">{{ post.author.name }}</h4>
                                     <div class="badge badge-outline">{{ post.category.title }}</div>
-                                    <div class="flex">
-                                        <CommentIcon class="w-6"></CommentIcon> {{ post.comments_count }}
-                                    </div>
+                                    <CommentIcon></CommentIcon> {{ post.comments_count }}
+                                    <HeartIcon></HeartIcon> {{ post.likes_count }}
                                 </div>
                             </article>
                         </div>

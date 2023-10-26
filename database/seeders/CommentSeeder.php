@@ -15,18 +15,12 @@ class CommentSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::limit(10)->get();
+        $users = User::where('id', '>', 1)->get();
         $posts = Post::all()->random(20);
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             Comment::factory()
                 ->for($users->random(), 'owner')
-                ->for($posts->random(), 'commentable')
-                ->create();
-        }
-        for ($i = 0; $i < 300; $i++) {
-            Comment::factory()
-                ->for(User::factory()->create(), 'owner')
                 ->for($posts->random(), 'commentable')
                 ->create();
         }

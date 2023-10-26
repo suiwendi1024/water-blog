@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Comment extends Model
 {
-    use HasFactory;
+    use HasFactory,
+        HasLikes;
 
     /**
      * 可批量指定的属性。
