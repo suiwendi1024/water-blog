@@ -17,7 +17,7 @@ class CommentController extends Controller
      */
     public function index($commentable)
     {
-        $comments = $commentable->comments()->paginate();
+        $comments = $commentable->comments()->latest('id')->paginate();
 
         return response()->json($comments);
     }
@@ -69,6 +69,7 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $this->authorize('delete', $comment);
+        $comment->delete();
     }
 }

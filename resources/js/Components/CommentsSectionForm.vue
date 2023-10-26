@@ -21,7 +21,7 @@ const submit = () => {
     axios.post(props.url, form.data()).then(({ data }) => {
         emit('created', data)
         form.reset()
-    }).catch((error) => {
+    }).catch(error => {
         form.setError(error.response.data.errors)
     })
 }

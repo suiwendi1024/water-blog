@@ -64,7 +64,7 @@ const currentCategory = ref(new URLSearchParams(location.search).get('category')
                                 ></div>
                                 <div class="card-actions items-center text-gray-600">
                                     <h4 class="font-bold">{{ post.author.name }}</h4>
-                                    <div class="badge badge-outline ">{{ post.category.title }}</div>
+                                    <div class="badge badge-outline">{{ post.category.title }}</div>
                                     <div class="flex"><CommentIcon class="w-6"></CommentIcon> {{ post.comments_count }}</div>
                                 </div>
                             </article>

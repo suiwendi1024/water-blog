@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
 import axios from 'axios';
-import CommentForm from '@/Components/CommentForm.vue';
+import CommentsSectionForm from '@/Components/CommentsSectionForm.vue';
+import CommentsSectionDropdown from '@/Components/CommentsSectionDropdown.vue';
 
 const props = defineProps({
     url: {
@@ -21,22 +22,30 @@ const getResults = (page = 1) => {
 
 getResults()
 
-const addComment = (comment) => {
+const addComment = comment => {
     laravelData.value.data.unshift(comment)
+    laravelData.value.total++
+}
+
+const removeComment = index => {
+    laravelData.value.data.splice(index, 1)
+    laravelData.value.total--
 }
 </script>
 
 <template>
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg divide-y">
+    <div class="bg-white shadow-sm sm:rounded-lg divide-y">
+        <!-- 发表评论 -->
         <div class="card-body">
             评论 {{ laravelData.total }}
-            <CommentForm
+            <CommentsSectionForm
                 :url="url"
                 @created="addComment"
-            ></CommentForm>
+            ></CommentsSectionForm>
         </div>
+        <!-- 评论列表 -->
         <article
-            v-for="comment in laravelData.data"
+            v-for="(comment, index) in laravelData.data"
             :key="comment.id"
             class="card-body"
         >
@@ -47,8 +56,15 @@ const addComment = (comment) => {
                 >{{ comment.owner.name }}</a>
             </h4>
             <div v-html="comment.body"></div>
-            <div class="card-actions items-center text-gray-600">
-                <div>{{ comment.created_at }}</div>
+            <div class="flex justify-between">
+                <div class="card-actions items-center text-gray-600">
+                    <div>{{ comment.created_at }}</div>
+                </div>
+                <CommentsSectionDropdown
+                    :id="comment.id"
+                    :can-delete="comment.owner.id == $page.props.auth.user.id"
+                    @deleted="removeComment(index)"
+                ></CommentsSectionDropdown>
             </div>
         </article>
     </div>
@@ -56,4 +72,5 @@ const addComment = (comment) => {
     <TailwindPagination
         :data="laravelData"
         @pagination-change-page="getResults"
-    ></TailwindPagination></template>
+    ></TailwindPagination>
+</template>
