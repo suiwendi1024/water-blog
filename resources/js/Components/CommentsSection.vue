@@ -34,7 +34,7 @@ const removeComment = index => {
 </script>
 
 <template>
-    <div class="bg-white shadow-sm sm:rounded-lg divide-y">
+    <div class="card bg-white shadow-sm sm:rounded-lg divide-y">
         <!-- 发表评论 -->
         <div class="card-body">
             评论 {{ laravelData.total }}
@@ -56,8 +56,8 @@ const removeComment = index => {
                 >{{ comment.owner.name }}</a>
             </h4>
             <div v-html="comment.body"></div>
-            <div class="flex justify-between">
-                <div class="card-actions items-center text-gray-600">
+            <div class="flex justify-between -mb-2">
+                <div class="card-actions items-center text-gray-600 text-sm">
                     <div>{{ comment.created_at }}</div>
                 </div>
                 <CommentsSectionDropdown

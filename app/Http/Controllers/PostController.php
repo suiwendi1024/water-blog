@@ -27,6 +27,7 @@ class PostController extends Controller
         $posts = $query->paginate()->through(fn (Post $post) => $post->append(['beginning', 'href']));
 
         return inertia('Posts/Index', [
+            'list' => fn () => Post::latest('comments_count')->limit(10)->get()->append('href'),
             'posts' => fn () => $posts,
             'categories' => fn () => Category::all(),
         ]);
@@ -53,6 +54,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post->author->loadCount('posts');
+
         return inertia('Posts/Show', [
             'post' => fn () => $post,
         ]);

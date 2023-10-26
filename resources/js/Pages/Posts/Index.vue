@@ -6,6 +6,10 @@ import { ref } from 'vue';
 import { TailwindPagination } from 'laravel-vue-pagination';
 
 const props = defineProps({
+    list: {
+        type: Array,
+        required: true,
+    },
     posts: {
         type: Object,
         required: true,
@@ -41,6 +45,25 @@ const currentCategory = ref(new URLSearchParams(location.search).get('category')
                 <div class="flex flex-row gap-4">
                     <div class="basis-3/12">
                         <!-- 帖子排行榜 -->
+                        <ul class="menu bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <li
+                                v-for="(item, index) in list"
+                                :key="item.id"
+                            >
+                                <a
+                                    :href="item.href"
+                                    target="_blank"
+                                >
+                                    <span
+                                        class="badge badge-sm"
+                                        :class="index < 3 ? 'badge-secondary' : 'badge-neutral'"
+                                    >
+                                        {{ ++index }}
+                                    </span>
+                                    {{ item.title }}
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
                     <div class="basis-7/12 space-y-4">
@@ -48,7 +71,7 @@ const currentCategory = ref(new URLSearchParams(location.search).get('category')
                         <div
                             v-for="post in laravelData.data"
                             :key="post.id"
-                            class="bg-white overflow-hidden shadow-sm sm:rounded-lg"
+                            class="card bg-white overflow-hidden shadow-sm sm:rounded-lg"
                         >
                             <article class="card-body">
                                 <h2 class="card-title">
@@ -65,7 +88,9 @@ const currentCategory = ref(new URLSearchParams(location.search).get('category')
                                 <div class="card-actions items-center text-gray-600">
                                     <h4 class="font-bold">{{ post.author.name }}</h4>
                                     <div class="badge badge-outline">{{ post.category.title }}</div>
-                                    <div class="flex"><CommentIcon class="w-6"></CommentIcon> {{ post.comments_count }}</div>
+                                    <div class="flex">
+                                        <CommentIcon class="w-6"></CommentIcon> {{ post.comments_count }}
+                                    </div>
                                 </div>
                             </article>
                         </div>
