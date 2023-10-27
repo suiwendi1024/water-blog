@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -42,5 +43,6 @@ class RouteServiceProvider extends ServiceProvider
         // 绑定模型
         Route::model('post', Post::class);
         Route::model('comment', Comment::class);
+        Route::model('followee', User::class);
     }
 }

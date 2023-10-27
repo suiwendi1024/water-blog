@@ -1,9 +1,11 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CommentsSection from '@/Components/CommentsSection.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import CommentIcon from '@/Components/CommentIcon.vue';
 import LikeIcon from '@/Components/LikeIcon.vue';
+import DangerButton from '@/Components/DangerButton.vue';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const props = defineProps({
     post: {
@@ -19,6 +21,16 @@ const toggleLike = () => {
     axios[method](url).then(() => {
         props.post.likes_count += props.post.is_liked ? -1 : 1
         props.post.is_liked = !props.post.is_liked
+    })
+}
+
+const toggleFollow = () => {
+    let method = props.post.author.is_followed ? 'delete' : 'post'
+    let url = route('followees.follows.store', { followee: props.post.author.id })
+
+    axios[method](url).then(() => {
+        props.post.author.received_follows_count += props.post.author.is_followed ? -1 : 1
+        props.post.author.is_followed = !props.post.author.is_followed
     })
 }
 </script>
@@ -43,14 +55,31 @@ const toggleLike = () => {
                             <article class="prose lg:prose-xl max-w-none">
                                 <h2>{{ post.title }}</h2>
                                 <div class="not-prose">
+                                    <!-- 数据 -->
                                     <div class="space-x-8 text-sm">
                                         <span>发表 / {{ post.updated_at }}</span>
-                                        <span>评论 / {{ post.comments_count }}</span>
                                         <span>点赞 / {{ post.likes_count }}</span>
+                                        <span>评论 / {{ post.comments_count }}</span>
                                     </div>
-                                    <div class="font-bold mt-8">{{ post.author.name }}</div>
-                                    <div class="space-x-8 text-sm">
-                                        <span>帖子 / {{ post.author.posts_count }}</span>
+                                    <!-- 作者 -->
+                                    <div class="flex justify-between mt-8 items-stretch">
+                                        <div>
+                                            <div class="font-bold">{{ post.author.name }}</div>
+                                            <div class="space-x-8 text-sm">
+                                                <span>关注 / {{ post.author.received_follows_count }}</span>
+                                                <span>帖子 / {{ post.author.posts_count }}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <DangerButton
+                                                v-if="!post.author.is_followed"
+                                                @click="toggleFollow"
+                                            >关注</DangerButton>
+                                            <PrimaryButton
+                                                v-else
+                                                @click="toggleFollow"
+                                            >取消关注</PrimaryButton>
+                                        </div>
                                     </div>
                                 </div>
                                 <hr>
@@ -106,7 +135,6 @@ const toggleLike = () => {
                     </div>
                 </div>
 
-            </div>
         </div>
-    </AuthenticatedLayout>
-</template>
+    </div>
+</AuthenticatedLayout></template>

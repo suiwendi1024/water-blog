@@ -37,7 +37,6 @@ const toggleLike = () => {
             <div class="card-actions items-center text-gray-600">
                 <h4 class="font-bold">{{ post.author.name }}</h4>
                 <div class="badge badge-outline">{{ post.category.title }}</div>
-                <CommentIcon></CommentIcon> {{ post.comments_count }}
                 <a
                     href=""
                     @click.prevent="toggleLike"
@@ -45,6 +44,7 @@ const toggleLike = () => {
                     <LikeIcon :is-liked="post.is_liked"></LikeIcon>
                 </a>
                 {{ post.likes_count }}
+                <CommentIcon></CommentIcon> {{ post.comments_count }}
             </div>
         </article>
     </div></template>

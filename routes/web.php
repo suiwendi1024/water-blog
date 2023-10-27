@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -51,3 +52,7 @@ Route::post('posts/{post}/likes', [LikeController::class, 'store'])->name('posts
 Route::delete('posts/{post}/likes', [LikeController::class, 'destroy'])->name('posts.likes.destroy');
 Route::post('comments/{comment}/likes', [LikeController::class, 'store'])->name('comments.likes.store');
 Route::delete('comments/{comment}/likes', [LikeController::class, 'destroy'])->name('comments.likes.destroy');
+
+// 关注
+Route::post('followees/{followee}/follows', [FollowController::class, 'store'])->name('followees.follows.store');
+Route::delete('followees/{followee}/follows', [FollowController::class, 'destroy'])->name('followees.follows.destroy');

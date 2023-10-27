@@ -59,7 +59,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post->loadCount('comments', 'likes')->append('is_liked');
-        $post->author->loadCount('posts');
+        $post->author->loadCount('posts', 'receivedFollows');
 
         return inertia('Posts/Show', [
             'post' => fn () => $post,

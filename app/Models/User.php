@@ -3,11 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -62,5 +63,67 @@ class User extends Authenticatable
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * 用户发出的关注。
+     *
+     * @return HasMany
+     */
+    public function follows(): HasMany
+    {
+        return $this->hasMany(Follow::class);
+    }
+
+    /**
+     * 用户收到的关注。
+     *
+     * @return HasMany
+     */
+    public function receivedFollows(): HasMany
+    {
+        return $this->hasMany(Follow::class, 'followee_id');
+    }
+
+    /**
+     * 关注该用户。
+     *
+     * @return void
+     */
+    public function follow(): void
+    {
+        if (!$this->isFollowed) {
+            $this->receivedFollows()->create([
+                'user_id' => auth()->id(),
+            ]);
+        }
+    }
+
+    /**
+     * 取消关注该用户。
+     *
+     * @return void
+     */
+    public function unfollow(): void
+    {
+        if ($this->isFollowed) {
+            $this->receivedFollows()->where([
+                'user_id' => auth()->id(),
+            ])->delete();
+        }
+    }
+
+    /**
+     * 判断该用户是否被关注。
+     *
+     * @return Attribute
+     */
+    protected function isFollowed(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value) => (bool)$this->receivedFollows()->where([
+                'user_id' => auth()->id(),
+            ])->first(),
+        );
     }
 }
