@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\LikeController;
@@ -45,7 +46,9 @@ require __DIR__.'/auth.php';
 Route::resource('posts', PostController::class);
 
 // 评论
-Route::resource('posts.comments', CommentController::class)->shallow();
+Route::get('posts/{post}/comments', [CommentController::class, 'index'])->name('posts.commments.index');
+Route::post('posts/{post}/comments', [CommentController::class, 'store'])->name('posts.commments.store');
+Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('commments.destroy');
 
 // 点赞
 Route::post('posts/{post}/likes', [LikeController::class, 'store'])->name('posts.likes.store');
@@ -56,3 +59,15 @@ Route::delete('comments/{comment}/likes', [LikeController::class, 'destroy'])->n
 // 关注
 Route::post('followees/{followee}/follows', [FollowController::class, 'store'])->name('followees.follows.store');
 Route::delete('followees/{followee}/follows', [FollowController::class, 'destroy'])->name('followees.follows.destroy');
+
+// 关注列表
+Route::get('users/{user}/follows', [FollowController::class, 'index'])->name('users.follows.index');
+Route::put('follows/{follow}', [FollowController::class, 'update'])->name('follows.update');
+
+// 关注分组
+// Route::get('users/{user}/follow-groups', [FollowGroupController::class, 'store'])->name('users.follow-groups.store');
+// Route::put('follow-groups/{follow-group}', [FollowGroupController::class, 'update'])->name('follow-groups.update');
+// Route::delete('follow-groups/{follow-group}', [FollowGroupController::class, 'destroy'])->name('follow-groups.destroy');
+
+// 分类
+Route::resource('categories', CategoryController::class);

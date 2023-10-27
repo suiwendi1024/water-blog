@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreFollowRequest;
 use App\Http\Requests\UpdateFollowRequest;
 use App\Models\Follow;
+use App\Models\User;
 
 class FollowController extends Controller
 {
@@ -22,35 +22,11 @@ class FollowController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreFollowRequest $request, $followee)
+    public function store(User $followee)
     {
         $followee->follow();
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Follow $follow)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Follow $follow)
-    {
-        //
     }
 
     /**
@@ -64,7 +40,7 @@ class FollowController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Follow $follow, $followee)
+    public function destroy(User $followee)
     {
         $followee->unfollow();
     }
