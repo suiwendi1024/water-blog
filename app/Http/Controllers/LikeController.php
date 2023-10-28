@@ -15,6 +15,7 @@ class LikeController extends Controller
     public function store($likeable)
     {
         $likeable->like();
+        return response()->json(['message' => '已点赞！']);
     }
 
     /**
@@ -23,5 +24,6 @@ class LikeController extends Controller
     public function destroy($likeable)
     {
         $likeable->unlike();
+        return response()->json(['message' => '已取消点赞！']);
     }
 }

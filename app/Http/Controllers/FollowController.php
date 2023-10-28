@@ -27,6 +27,7 @@ class FollowController extends Controller
     public function store(User $followee)
     {
         $followee->follow();
+        return response()->json(['message' => '已关注！']);
     }
 
     /**
@@ -43,5 +44,6 @@ class FollowController extends Controller
     public function destroy(User $followee)
     {
         $followee->unfollow();
+        return response()->json(['message' => '已取消关注！']);
     }
 }

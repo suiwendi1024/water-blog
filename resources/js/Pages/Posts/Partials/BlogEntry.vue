@@ -1,6 +1,7 @@
 <script setup>
 import CommentIcon from '@/Components/CommentIcon.vue';
 import LikeIcon from '@/Components/LikeIcon.vue';
+import { useToast } from "vue-toastification";
 
 const props = defineProps({
     post: {
@@ -9,13 +10,16 @@ const props = defineProps({
     },
 })
 
+const toast = useToast();
+
 const toggleLike = () => {
     let method = props.post.is_liked ? 'delete' : 'post'
     let url = route('posts.likes.store', { post: props.post.id })
 
-    axios[method](url).then(() => {
+    axios[method](url).then(({ data }) => {
         props.post.likes_count += props.post.is_liked ? -1 : 1
         props.post.is_liked = !props.post.is_liked
+        toast.success(data.message)
     })
 }
 </script>
