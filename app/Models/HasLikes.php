@@ -8,6 +8,18 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 trait HasLikes
 {
     /**
+     * 模型被删除时，先逐一删除其点赞。
+     *
+     * @return void
+     */
+    protected static function bootHasLikes(): void
+    {
+        static::deleting(function ($model) {
+            return $model->likes->map->delete();
+        });
+    }
+
+    /**
      * 可被点赞的模型的点赞。
      *
      * @return MorphMany

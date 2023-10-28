@@ -26,16 +26,16 @@ const showingNavigationDropdown = ref(false);
                                     />
                                 </Link>
                             </div>
+                        </div>
 
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <NavLink :href="route('posts.index')" :active="route().current('posts.index')">
-                                    主页
-                                </NavLink>
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                            </div>
+                        <!-- Navigation Links -->
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <NavLink :href="route('posts.index')" :active="route().current('posts.index')">
+                                博客
+                            </NavLink>
+                            <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                Dashboard
+                            </NavLink>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
@@ -116,7 +116,7 @@ const showingNavigationDropdown = ref(false);
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('posts.index')" :active="route().current('posts.index')">
-                            主页
+                            博客
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard

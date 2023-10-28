@@ -46,9 +46,9 @@ require __DIR__.'/auth.php';
 Route::resource('posts', PostController::class);
 
 // 评论
-Route::get('posts/{post}/comments', [CommentController::class, 'index'])->name('posts.commments.index');
-Route::post('posts/{post}/comments', [CommentController::class, 'store'])->name('posts.commments.store');
-Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('commments.destroy');
+Route::get('posts/{post}/comments', [CommentController::class, 'index'])->name('posts.comments.index');
+Route::post('posts/{post}/comments', [CommentController::class, 'store'])->name('posts.comments.store');
+Route::delete('comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
 // 点赞
 Route::post('posts/{post}/likes', [LikeController::class, 'store'])->name('posts.likes.store');

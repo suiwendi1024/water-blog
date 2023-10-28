@@ -36,77 +36,53 @@ const currentCategory = ref(new URLSearchParams(location.search).get('category')
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">主页</h2>
+            <div class="grid grid-cols-12 gap-4">
+                <div class="col-span-7 col-start-2">
+                    <!-- 分类 -->
+                    <div class="tabs">
+                        <Link v-for="(category, index) in categories" :key="category.id" class="tab" :only="['posts']"
+                              :href="!index ? route('posts.index') : route('posts.index', { category: category.id })"
+                              :class="{ 'tab-active': !index ? !currentCategory : category.id == currentCategory }">
+                        {{ category.title }}
+                        </Link>
+                    </div>
+                </div>
+
+                <div class="col-span-3 flex justify-end">
+                    <!-- 发表帖子 -->
+                    <Link :href="route('posts.create')" as="button" class="btn btn-warning btn-sm">发表帖子</Link>
+                </div>
+            </div>
         </template>
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-                <div class="flex flex-row gap-4">
-                    <div class="basis-3/12">
+                <div class="grid grid-cols-12 gap-4">
+                    <div class="col-span-7 col-start-2">
+                        <!-- 帖子列表 -->
+                        <article class="card bg-white overflow-hidden shadow-sm sm:rounded-lg divide-y">
+                            <BlogEntry v-for="post in laravelData.data" :key="post.id" :post="post"></BlogEntry>
+                        </article>
+
+                        <div class="flex justify-end">
+                            <TailwindPagination class="mt-4" :data="laravelData" @pagination-change-page="getResults" />
+                        </div>
+                    </div>
+
+                    <div class="col-span-3">
                         <!-- 帖子排行榜 -->
-                        <ul class="menu bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <li
-                                v-for="(item, index) in list"
-                                :key="item.id"
-                            >
-                                <a
-                                    :href="item.href"
-                                    target="_blank"
-                                >
-                                    <span
-                                        class="badge badge-sm"
-                                        :class="index < 3 ? 'badge-secondary' : 'badge-neutral'"
-                                    >
+                        <ul class="menu bg-white overflow-hidden shadow-sm sm:rounded-lg p-0 [&_li>*]:rounded-none">
+                            <li class="menu-title text-gray-900 border-b">排行榜</li>
+                            <li v-for="(item, index) in list" :key="item.id">
+                                <a :href="item.href" target="_blank">
+                                    <span class="badge badge-sm" :class="index < 3 ? 'badge-secondary' : 'badge-neutral'">
                                         {{ ++index }}
                                     </span>
                                     {{ item.title }}
                                 </a>
                             </li>
                         </ul>
-                    </div>
-
-                    <div class="basis-7/12 space-y-4">
-                        <!-- 帖子列表 -->
-                        <BlogEntry
-                            v-for="post in laravelData.data"
-                            :key="post.id"
-                            :post="post"
-                        ></BlogEntry>
-
-                        <TailwindPagination
-                            :data="laravelData"
-                            @pagination-change-page="getResults"
-                        ></TailwindPagination>
-                    </div>
-
-                    <div class="basis-2/12">
-                        <!-- 分类菜单 -->
-                        <div class="sticky top-0">
-                            <ul class="menu menu-lg bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                                <li
-                                    v-for="(category, index) in categories"
-                                    :key="category.id"
-                                >
-                                    <Link
-                                        v-if="!index"
-                                        :href="route('posts.index')"
-                                        :class="{ active: !currentCategory }"
-                                        :only="['posts']"
-                                    >
-                                    {{ category.title }}
-                                    </Link>
-                                    <Link
-                                        v-else
-                                        :href="route('posts.index', { category: category.id })"
-                                        :class="{ active: category.id == currentCategory }"
-                                        :only="['posts']"
-                                    >
-                                    {{ category.title }}
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
 

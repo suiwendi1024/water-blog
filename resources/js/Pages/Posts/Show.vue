@@ -39,10 +39,6 @@ const toggleFollow = () => {
     <Head title="主页" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">主页 / 帖子</h2>
-        </template>
-
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
@@ -71,14 +67,9 @@ const toggleFollow = () => {
                                             </div>
                                         </div>
                                         <div>
-                                            <DangerButton
-                                                v-if="!post.author.is_followed"
-                                                @click="toggleFollow"
-                                            >关注</DangerButton>
-                                            <PrimaryButton
-                                                v-else
-                                                @click="toggleFollow"
-                                            >取消关注</PrimaryButton>
+                                            <DangerButton v-if="!post.author.is_followed" @click="toggleFollow">关注
+                                            </DangerButton>
+                                            <PrimaryButton v-else @click="toggleFollow">取消关注</PrimaryButton>
                                         </div>
                                     </div>
                                 </div>
@@ -88,10 +79,7 @@ const toggleFollow = () => {
                         </div>
 
                         <!-- 评论区 -->
-                        <div
-                            class="mt-8 space-y-4"
-                            id="comments-section"
-                        >
+                        <div class="mt-8 space-y-4" id="comments-section">
                             <CommentsSection :url="route('posts.comments.index', { post: post.id })"></CommentsSection>
                         </div>
                     </div>
@@ -99,7 +87,7 @@ const toggleFollow = () => {
                     <!-- 侧边按钮 -->
                     <div class="basis-1/12">
                         <div class="fixed bottom-0 mb-8 space-y-4">
-                            <ul class="menu menu-md bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <ul class="menu menu-md bg-white overflow-hidden shadow-sm sm:rounded-lg p-0 [&_li>*]:rounded-none">
                                 <li>
                                     <a @click="toggleLike">
                                         <LikeIcon :is-liked="post.is_liked"></LikeIcon>
@@ -111,22 +99,13 @@ const toggleFollow = () => {
                                     </a>
                                 </li>
                             </ul>
-                            <ul class="menu menu-md bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <ul class="menu menu-md bg-white overflow-hidden shadow-sm sm:rounded-lg p-0 [&_li>*]:rounded-none">
                                 <li>
                                     <a href="#">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.5"
-                                            stroke="currentColor"
-                                            class="w-6 h-6"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18"
-                                            />
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M4.5 10.5L12 3m0 0l7.5 7.5M12 3v18" />
                                         </svg>
                                     </a>
                                 </li>
@@ -135,6 +114,7 @@ const toggleFollow = () => {
                     </div>
                 </div>
 
+            </div>
         </div>
-    </div>
-</AuthenticatedLayout></template>
+    </AuthenticatedLayout>
+</template>
